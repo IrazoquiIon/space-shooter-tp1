@@ -51,5 +51,8 @@ public:
 	// Fonction appelée lors d'une collision
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
+	
+	// Distance maximale avant que l'astéroïde soit détruit automatiquement
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroid")
+	float MaxDistanceFromCenter = 3000.0f;
 };

@@ -29,13 +29,19 @@ void AAsteroid::BeginPlay()
 	Health = FMath::RandRange(MinHealth, MaxHealth);
 }
 
-// Called every frame
+// Call everytime
 void AAsteroid::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	FVector NewLocation = GetActorLocation() + (MovementDirection * MovementSpeed * DeltaTime);
 	SetActorLocation(NewLocation, true);
+
+	// Détruit l'astéroïde s'il sort trop loin de la zone de jeu
+	if (GetActorLocation().Size() > MaxDistanceFromCenter)
+	{
+		Destroy();
+	}
 }
 
 void AAsteroid::ApplyDamage()
@@ -52,3 +58,4 @@ void AAsteroid::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimiti
 {
 	// La collision avec le vaisseau sera gérée ici une fois le système de vie du joueur en place
 }
+
