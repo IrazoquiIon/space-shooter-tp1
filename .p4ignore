@@ -6,3 +6,4 @@ Saved/
 *.sln
 *.slnx
 .git/
+.idea/

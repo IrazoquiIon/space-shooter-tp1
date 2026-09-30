@@ -2,6 +2,8 @@
 
 
 #include "SpaceShip.h"
+#include "Projectile.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 ASpaceShip::ASpaceShip()
@@ -36,26 +38,47 @@ void ASpaceShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	
 	PlayerInputComponent->BindAxis("MoveHorizontal", this, &ASpaceShip::MoveHorizontal);
 	PlayerInputComponent->BindAxis("MoveVertical", this, &ASpaceShip::MoveVertical);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASpaceShip::Fire);
 
 }
 
 void ASpaceShip::MoveHorizontal(float Value)
 {
-	if (Value != 0.0f)
-	{
-		FVector NewLocation = GetActorLocation();
-		NewLocation.Y += Value * MovementSpeed * GetWorld()->GetDeltaSeconds();
-		SetActorLocation(NewLocation);
-	}
+	FVector NewLocation = GetActorLocation();
+	NewLocation.Y += Value * MovementSpeed * GetWorld()->GetDeltaSeconds();
+	SetActorLocation(NewLocation);
+
+	LastMoveInput.Y = Value;
+	UpdateShipRotation();
 }
 
 void ASpaceShip::MoveVertical(float Value)
 {
-	if (Value != 0.0f)
+	FVector NewLocation = GetActorLocation();
+	NewLocation.X += Value * MovementSpeed * GetWorld()->GetDeltaSeconds();
+	SetActorLocation(NewLocation);
+
+	LastMoveInput.X = Value;
+	UpdateShipRotation();
+}
+
+void ASpaceShip::UpdateShipRotation()
+{
+	if (!LastMoveInput.IsNearlyZero())
 	{
-		FVector NewLocation = GetActorLocation();
-		NewLocation.X += Value * MovementSpeed * GetWorld()->GetDeltaSeconds();
-		SetActorLocation(NewLocation);
+		FRotator NewRotation = LastMoveInput.Rotation();
+		SetActorRotation(NewRotation);
+	}
+}
+
+void ASpaceShip::Fire()
+{
+	if (ProjectileClass)
+	{
+		FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 100.0f;
+		FRotator SpawnRotation = GetActorRotation();
+
+		GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
 	}
 }
 

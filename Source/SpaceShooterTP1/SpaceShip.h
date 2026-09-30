@@ -33,9 +33,19 @@ public:
 	// Vitesse de déplacement, modifiable depuis le Blueprint
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	float MovementSpeed = 500.0f;
+	
+	// Classe de projectile à faire apparaître, assignable depuis le Blueprint
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	TSubclassOf<class AProjectile> ProjectileClass;
 private:
 	// Fonctions appelées par les axes d'input
 	void MoveHorizontal(float Value);
 	void MoveVertical(float Value);
+	
+	// Fonction appelée pour tirer
+	void Fire();
+	
+	FVector LastMoveInput = FVector(1.0f, 0.0f, 0.0f);
+	void UpdateShipRotation();
 
 };
