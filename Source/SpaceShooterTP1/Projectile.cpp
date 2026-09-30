@@ -3,6 +3,7 @@
 
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
+#include "Asteroid.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -34,17 +35,20 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Déplace le projectile dans sa direction à chaque frame
 	FVector NewLocation = GetActorLocation() + (GetActorForwardVector() * ProjectileSpeed * DeltaTime);
-	SetActorLocation(NewLocation);
+	SetActorLocation(NewLocation, true);
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Pour l'instant : le projectile se détruit simplement au contact
-	// Plus tard, on ajoutera ici la logique pour infliger des dégâts à l'astéroïde touché
 	if (OtherActor && OtherActor != this)
 	{
+		AAsteroid* HitAsteroid = Cast<AAsteroid>(OtherActor);
+		if (HitAsteroid)
+		{
+			HitAsteroid->ApplyDamage();
+		}
+
 		Destroy();
 	}
 }
