@@ -37,6 +37,34 @@ public:
 	// Classe de projectile à faire apparaître, assignable depuis le Blueprint
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	TSubclassOf<class AProjectile> ProjectileClass;
+	
+	// Nombre de vies du joueur
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	int32 Lives = 3;
+
+	// Fonction appelée quand le vaisseau perd une vie
+	void LoseLife();
+	
+	// Classe du Widget HUD à afficher, assignable depuis le Blueprint
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<class UUserWidget> HUDWidgetClass;
+
+	// Référence vers l'instance du widget créée
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+	UUserWidget* HUDWidgetInstance;
+	
+	// Widget HUD casté pour appeler ses fonctions Blueprint
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void OnLivesChanged(int32 NewLives);
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Ship")
+	int32 Score = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void AddScore(int32 Points);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void OnScoreChanged(int32 NewScore);
 private:
 	// Fonctions appelées par les axes d'input
 	void MoveHorizontal(float Value);

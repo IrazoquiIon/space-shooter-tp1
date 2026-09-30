@@ -4,6 +4,8 @@
 #include "Asteroid.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "SpaceShip.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAsteroid::AAsteroid()
@@ -50,12 +52,29 @@ void AAsteroid::ApplyDamage()
 
 	if (Health <= 0)
 	{
+		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+		if (PlayerPawn)
+		{
+			ASpaceShip* PlayerShip = Cast<ASpaceShip>(PlayerPawn);
+			if (PlayerShip)
+			{
+				PlayerShip->AddScore(100);
+			}
+		}
+
 		Destroy();
 	}
 }
-
 void AAsteroid::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// La collision avec le vaisseau sera gérée ici une fois le système de vie du joueur en place
+	if (OtherActor && OtherActor != this)
+	{
+		ASpaceShip* HitShip = Cast<ASpaceShip>(OtherActor);
+		if (HitShip)
+		{
+			HitShip->LoseLife();
+			Destroy();
+		}
+	}
 }
 

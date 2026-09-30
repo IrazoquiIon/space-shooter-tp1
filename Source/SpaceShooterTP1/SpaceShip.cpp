@@ -4,6 +4,7 @@
 #include "SpaceShip.h"
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 ASpaceShip::ASpaceShip()
@@ -21,7 +22,17 @@ ASpaceShip::ASpaceShip()
 void ASpaceShip::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (HUDWidgetClass)
+	{
+		HUDWidgetInstance = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
+		if (HUDWidgetInstance)
+		{
+			HUDWidgetInstance->AddToViewport();
+			OnLivesChanged(Lives);
+			OnScoreChanged(Score);
+		}
+	}
 }
 
 // Called every frame
@@ -81,4 +92,23 @@ void ASpaceShip::Fire()
 		GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
 	}
 }
+
+void ASpaceShip::LoseLife()
+{
+	Lives--;
+	OnLivesChanged(Lives);
+
+	if (Lives <= 0)
+	{
+		Destroy();
+	}
+}
+
+void ASpaceShip::AddScore(int32 Points)
+{
+	Score += Points;
+	OnScoreChanged(Score);
+}
+
+
 
