@@ -38,8 +38,8 @@ public:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
-	// Effet visuel à l'impact, assignable depuis le Blueprint
+	// Acteur d'effet d'impact 2D (flipbook) à faire apparaître quand le projectile touche
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
-	class UNiagaraSystem* HitEffect;
+	TSubclassOf<AActor> HitClass;
 
 };

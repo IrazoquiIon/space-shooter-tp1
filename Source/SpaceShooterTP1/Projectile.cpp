@@ -4,7 +4,6 @@
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
 #include "Asteroid.h"
-#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -28,6 +27,10 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	// Le projectile ignore tout (vaisseau, autres projectiles...) sauf les astéroïdes
+	ProjectileMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	ProjectileMesh->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block);
     
 }
 
@@ -44,9 +47,9 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 {
 	if (OtherActor && OtherActor != this)
 	{
-		if (HitEffect)
+		if (HitClass)
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitEffect, GetActorLocation(), FRotator::ZeroRotator, FVector(0.02f, 0.02f, 0.02f));
+			GetWorld()->SpawnActor<AActor>(HitClass, GetActorLocation(), FRotator::ZeroRotator);
 		}
 
 		AAsteroid* HitAsteroid = Cast<AAsteroid>(OtherActor);
