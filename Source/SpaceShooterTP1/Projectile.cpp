@@ -4,6 +4,7 @@
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
 #include "Asteroid.h"
+#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -43,6 +44,11 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 {
 	if (OtherActor && OtherActor != this)
 	{
+		if (HitEffect)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitEffect, GetActorLocation(), FRotator::ZeroRotator, FVector(0.02f, 0.02f, 0.02f));
+		}
+
 		AAsteroid* HitAsteroid = Cast<AAsteroid>(OtherActor);
 		if (HitAsteroid)
 		{

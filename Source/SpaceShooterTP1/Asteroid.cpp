@@ -6,6 +6,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "SpaceShip.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 AAsteroid::AAsteroid()
@@ -52,6 +53,11 @@ void AAsteroid::ApplyDamage()
 
 	if (Health <= 0)
 	{
+		if (ExplosionEffect)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
+		}
+
 		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 		if (PlayerPawn)
 		{
@@ -65,6 +71,7 @@ void AAsteroid::ApplyDamage()
 		Destroy();
 	}
 }
+
 void AAsteroid::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor && OtherActor != this)

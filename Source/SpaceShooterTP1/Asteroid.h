@@ -55,4 +55,8 @@ public:
 	// Distance maximale avant que l'astéroïde soit détruit automatiquement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroid")
 	float MaxDistanceFromCenter = 3000.0f;
+	
+	// Effet visuel à l'explosion, assignable depuis le Blueprint
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroid")
+	class UNiagaraSystem* ExplosionEffect;
 };

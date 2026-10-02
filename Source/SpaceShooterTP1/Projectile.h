@@ -37,5 +37,9 @@ public:
 	// Fonction appelée lors d'une collision
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
+	// Effet visuel à l'impact, assignable depuis le Blueprint
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	class UNiagaraSystem* HitEffect;
 
 };
