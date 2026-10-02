@@ -40,7 +40,7 @@ public:
 
     // Cadence de tir (temps entre deux tirs en secondes)
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
-    float FireRate = 0.2f;
+    float FireRate = 0.5f;
     
     // Nombre de vies du joueur
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
