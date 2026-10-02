@@ -77,6 +77,17 @@ public:
     // Event déclenché au moment du Game Over, pour transmettre le widget créé et le score final
     UFUNCTION(BlueprintImplementableEvent, Category = "UI")
     void OnGameOver(UUserWidget* GameOverWidget, int32 FinalScore);
+    
+    // Event déclenché à chaque tir, pour afficher l'effet de canon en Blueprint
+    UFUNCTION(BlueprintImplementableEvent, Category = "Ship")
+    void OnFire();
+    
+    // Limites de la zone de jeu (le vaisseau ne peut pas en sortir)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+    float MaxX = 800.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+    float MaxY = 1400.0f;
 private:
     // Fonctions appelées par les axes d'input
     void MoveHorizontal(float Value);
