@@ -32,7 +32,7 @@ public:
     
     // Vitesse de déplacement, modifiable depuis le Blueprint
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
-    float MovementSpeed = 600.0f;
+    float MovementSpeed = 500.0f;
     
     // Classe de projectile à faire apparaître, assignable depuis le Blueprint
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
