@@ -69,6 +69,14 @@ public:
 
     UFUNCTION(BlueprintImplementableEvent, Category = "UI")
     void OnScoreChanged(int32 NewScore);
+    
+    // Classe du Widget Game Over à afficher, assignable depuis le Blueprint
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+    TSubclassOf<class UUserWidget> GameOverWidgetClass;
+    
+    // Event déclenché au moment du Game Over, pour transmettre le widget créé et le score final
+    UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+    void OnGameOver(UUserWidget* GameOverWidget, int32 FinalScore);
 private:
     // Fonctions appelées par les axes d'input
     void MoveHorizontal(float Value);

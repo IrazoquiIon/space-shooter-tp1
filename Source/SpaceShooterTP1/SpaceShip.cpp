@@ -112,10 +112,24 @@ void ASpaceShip::LoseLife()
 
     if (Lives <= 0)
     {
-       Destroy();
+        if (GameOverWidgetClass)
+        {
+            UUserWidget* GameOverWidget = CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass);
+            if (GameOverWidget)
+            {
+                GameOverWidget->AddToViewport();
+                OnGameOver(GameOverWidget, Score);
+            }
+        }
+
+        DisableInput(Cast<APlayerController>(GetController()));
+
+        if (HUDWidgetInstance)
+        {
+            HUDWidgetInstance->RemoveFromParent();
+        }
     }
 }
-
 void ASpaceShip::AddScore(int32 Points)
 {
     Score += Points;
