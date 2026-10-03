@@ -7,3 +7,6 @@ Saved/
 *.slnx
 .git/
 .idea/
+# Le build packagé doit être soumis en entier
+!Build/
+!Build/**

@@ -56,7 +56,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroid")
 	float MaxDistanceFromCenter = 3000.0f;
 	
-	// Effet visuel à l'explosion, assignable depuis le Blueprint
+	// Acteur d'explosion 2D (flipbook) à faire apparaître à la destruction
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroid")
-	class UNiagaraSystem* ExplosionEffect;
+	TSubclassOf<AActor> ExplosionClass;
 };

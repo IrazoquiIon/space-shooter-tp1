@@ -76,3 +76,4 @@ DerivedDataCache/*
 
 # Cache files for the engine to use
 .idea/
+*.DotSettings.user

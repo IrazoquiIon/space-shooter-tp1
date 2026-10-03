@@ -6,7 +6,6 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "SpaceShip.h"
 #include "Kismet/GameplayStatics.h"
-#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 AAsteroid::AAsteroid()
@@ -27,7 +26,11 @@ AAsteroid::AAsteroid()
 void AAsteroid::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	// Les astéroïdes s'ignorent entre eux (canal personnalisé "Asteroid")
+	AsteroidMesh->SetCollisionObjectType(ECC_GameTraceChannel1);
+	AsteroidMesh->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
+	
 	// Tire aléatoirement le nombre de points de vie entre MinHealth et MaxHealth
 	Health = FMath::RandRange(MinHealth, MaxHealth);
 }
@@ -53,9 +56,9 @@ void AAsteroid::ApplyDamage()
 
 	if (Health <= 0)
 	{
-		if (ExplosionEffect)
+		if (ExplosionClass)
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
+			GetWorld()->SpawnActor<AActor>(ExplosionClass, GetActorLocation(), FRotator::ZeroRotator);
 		}
 
 		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);

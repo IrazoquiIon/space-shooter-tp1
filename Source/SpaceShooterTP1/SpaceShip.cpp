@@ -58,6 +58,7 @@ void ASpaceShip::MoveHorizontal(float Value)
 {
     FVector NewLocation = GetActorLocation();
     NewLocation.Y += Value * MovementSpeed * GetWorld()->GetDeltaSeconds();
+    NewLocation.Y = FMath::Clamp(NewLocation.Y, -MaxY, MaxY);
     SetActorLocation(NewLocation);
 
     LastMoveInput.Y = Value;
@@ -68,6 +69,7 @@ void ASpaceShip::MoveVertical(float Value)
 {
     FVector NewLocation = GetActorLocation();
     NewLocation.X += Value * MovementSpeed * GetWorld()->GetDeltaSeconds();
+    NewLocation.X = FMath::Clamp(NewLocation.X, -MaxX, MaxX);
     SetActorLocation(NewLocation);
 
     LastMoveInput.X = Value;
@@ -87,10 +89,13 @@ void ASpaceShip::Fire()
 {
     if (ProjectileClass)
     {
-       FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 100.0f;
-       FRotator SpawnRotation = GetActorRotation();
+        FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 100.0f;
+        FRotator SpawnRotation = GetActorRotation();
 
-       GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+        GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+
+        // Déclenche l'effet de tir côté Blueprint
+        OnFire();
     }
 }
 
